@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-TOKEN = 'NzA5MDMwMTYxMTgxMzExMjI2.XrpvvQ.WvIHPgJYXzHKAJk4Q3sXoV-0cIA'
+TOKEN = '********'
 bot = commands.Bot(command_prefix='.')
 
 # 凸確認リスト
