@@ -3,7 +3,7 @@ from discord.ext import commands
 # import asyncio
 import boss
 
-TOKEN = '******'
+TOKEN = '*******'
 bot = commands.Bot(command_prefix='.')
 CHANNEL_ID = boss.CHANNEL_ID
 
@@ -51,41 +51,61 @@ async def on_ready():
 
 #.init 予約機能開始 or データ初期化
 @bot.command()
-async def init(ctx):
+async def init(ctx,*args):
     # channelの確認
     channel = ctx.channel.id
     if channel == CHANNEL_ID:
-        await initEvent(ctx,count)
+        # 引数の数が違う場合にエラー処理
+        if len(args) != 0:
+            embed = discord.Embed(title='エラー',description='コマンドに誤りがあります.\n(例:予約機能を開始したいor予約表にリセットをかけたい) .init',color=0xff0000)
+            await ctx.send(embed=embed)
+        else:
+            await initEvent(ctx,count)
     else:
         await msgError(ctx)
 
 #.now 現在の予約表を表示
 @bot.command() 
-async def now(ctx):
+async def now(ctx,*args):
     # channelの確認
     channel = ctx.channel.id
     if channel == CHANNEL_ID:
-        await nowEvent(ctx,count)
+        # 引数の数が違う場合にエラー処理
+        if len(args) != 0:
+            embed = discord.Embed(title='エラー',description='コマンドに誤りがあります.\n(例:現在の周を確認したい時) .now',color=0xff0000)
+            await ctx.send(embed=embed)
+        else:
+            await nowEvent(ctx,count)
     else:
         await msgError(ctx)
 
 #.next 次周の予約表を表示
 @bot.command()
-async def next(ctx):
+async def next(ctx,*args):
     # channelの確認
     channel = ctx.channel.id
     if channel == CHANNEL_ID:
-        await nextEvent(ctx,count)
+        # 引数の数が違う場合にエラー処理
+        if len(args) != 0:
+            embed = discord.Embed(title='エラー',description='コマンドに誤りがあります.\n(例:次周の予約を入れたいor次周の予約を確認したい時) .next',color=0xff0000)
+            await ctx.send(embed=embed)
+        else:
+            await nextEvent(ctx,count)
     else:
         await msgError(ctx)
 
 #.finish 予約表の更新
 @bot.command()
-async def finish(ctx):
+async def finish(ctx,*args):
     # channelの確認
     channel = ctx.channel.id
     if channel == CHANNEL_ID:
-        await finishEvent(ctx,count)
+        # 引数の数が違う場合にエラー処理
+        if len(args) != 0:
+            embed = discord.Embed(title='エラー',description='コマンドに誤りがあります.\n(例:現在の周が終わって周が更新された時) .finish',color=0xff0000)
+            await ctx.send(embed=embed)
+        else:
+            await finishEvent(ctx,count)
     else:
         await msgError(ctx)
 
@@ -117,10 +137,18 @@ async def h(ctx):
 #.totsu 
 @bot.command() 
 async def check(ctx,*args):
+    # 引数の数が違う場合にエラー
     if len(args) == 2:
         month = int(args[0])
         day = int(args[1])
         await totsucheck(ctx,month,day)
+    # 引数の値が数字でない場合にエラー処理
+    elif args[0].isdecimal() == False:
+        embed = discord.Embed(title='エラー',description='コマンドに誤りがあります.\n__.check {月} {日}__で入力してください.\n(例:5/28でセットしたい場合) .check 5 28',color=0xff0000)
+        await ctx.send(embed=embed)
+    elif args[1].isdecimal() == False:
+        embed = discord.Embed(title='エラー',description='コマンドに誤りがあります.\n__.check {月} {日}__で入力してください.\n(例:5/28でセットしたい場合) .check 5 28',color=0xff0000)
+        await ctx.send(embed=embed)
     else :
         embed = discord.Embed(title='エラー',description='コマンドに誤りがあります.\n__.check {月} {日}__で入力してください.\n(例:5/28でセットしたい場合) .check 5 28',color=0xff0000)
         await ctx.send(embed=embed)
